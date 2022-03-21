@@ -1,6 +1,7 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 const express = require('express');
+const { v4: uuid } = require('uuid');
 
 const db = require('./database');
 
@@ -21,11 +22,11 @@ app.post('/forecast', (req, res) => {
 	db.query(
 		'INSERT INTO forecast SET id= ?, no_of_months = ?, project_name = ?, remarks = ?, months = ?',
 		[
-			uuid(),
+			9,
 			req.body.no_of_months,
-			req.body.forecast_name,
+			req.body.project_name,
 			req.body.remarks,
-			req.body.months
+			JSON.stringify(req.body.months)
 		],
 		(err, results) => {
 			if (err) console.log(err);
