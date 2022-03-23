@@ -11,7 +11,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
-
+import { projectCreate } from '../../axios/axios';
 const Forecast = () => {
 	const navigation = useNavigation();
 
@@ -20,6 +20,7 @@ const Forecast = () => {
 	const [dropdownMonths, setDropdownMonths] = useState(1);
 	const [initialFormValues, setInitialFormValues] = useState({});
 	const [forecast, setForecast] = useState('');
+	const [type, setType] = useState('');
 
 	const [slide, setSlide] = useState(false);
 
@@ -37,12 +38,14 @@ const Forecast = () => {
 	};
 
 	class InitialFormValuesClass {
+
 		constructor(months = 1) {
-			this.forecast_type = '';
+			this.forecast_type = type;
+			this.forecast_name = '';
 			this.no_of_months = dropdownMonths;
 			this.forecast_name = '';
 			for (let i = 0; i < months; i++) {
-				this[`forecast_month${i + 1}`] = '';
+				this[`forecast_month${i}`] = '';
 			}
 			this.remarks = '';
 		}
@@ -50,11 +53,21 @@ const Forecast = () => {
 
 	return (
 		<Formik
-			initialValues={initialFormValues}
-			validationSchema={forecast_type_schema}
+			initialValues={{
+				forecast_type: type,
+				no_of_months: dropdownMonths,
+				forecast_name: '',
+				forecast_month1: '',
+				forecast_month2: '',
+				forecast_month3: '',
+				
+			}}
+			// validationSchema={forecast_type_schema}
 			validateOnMount={true}
 			onSubmit={(values) => {
 				console.log(values, 'values');
+				projectCreate(values)
+				console.log('jij');
 			}}
 		>
 			{({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
@@ -89,11 +102,15 @@ const Forecast = () => {
 												style={styles.picker}
 												selectedValue={dropdownMonths}
 												onValueChange={(itemValue, itemIndex) => {
-													handleNoOfMonthsChange(itemValue);
-													setDropdownMonths(itemValue);
-													const initial = new InitialFormValuesClass(itemValue);
-													console.log(initial);
-													console.log(itemValue);
+
+													handleNoOfMonthsChange(parseInt(itemValue));
+													setDropdownMonths(parseInt(itemValue));
+													setType(itemValue);
+													console.log(itemValue, 'itemValue');
+													const initial = new InitialFormValuesClass(parseInt(itemValue));
+													setInitialFormValues(initial);
+													console.log(type);
+													
 												}}
 											>
 												<Picker.Item
@@ -214,7 +231,10 @@ const Forecast = () => {
 								<View style={styles.sub_container}>
 									<TouchableOpacity
 										style={styles.button}
-										onPress={handleSubmit}
+										onPress={() => {
+											 handleSubmit();
+											
+										  }}
 									>
 										<Text style={{ color: 'white' }}>Submit</Text>
 									</TouchableOpacity>
