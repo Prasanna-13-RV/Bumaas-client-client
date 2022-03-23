@@ -8,7 +8,9 @@ const db = require('./database');
 const app = express();
 
 app.use(express.json());
+const route = require('./routes/route');
 
+app.use('/', route);
 app.get('/forecast', (req, res) => {
 	db.query('SELECT * FROM forecast', (err, results) => {
 		if (err) console.log(err);
