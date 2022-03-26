@@ -1,7 +1,8 @@
 import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import React, {useEffect} from "react";
 
-const Reports = ({navigation}) => {
+const Reports = ({navigation,route}) => {
+    console.log(route.params.projectid);
     return (
         <View style={styles.container}>
             {/* <TouchableOpacity style={styles.button} onPress={handleSubmit}>
@@ -10,7 +11,7 @@ const Reports = ({navigation}) => {
 
             <TouchableOpacity
                 style={styles.options}
-                onPress={() => navigation.push("Reports_Forecast")}
+                onPress={() => navigation.push("Reports_Forecast", {projectid: route.params.projectid})}
             >
                 <Text
                     style={{
@@ -24,7 +25,7 @@ const Reports = ({navigation}) => {
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.options}
-                onPress={() => navigation.push("Reports_Orders")}
+                onPress={() => navigation.push("Reports_Orders",{projectid: route.params.projectid})}
             >
                 <Text
                     style={{

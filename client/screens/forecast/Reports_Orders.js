@@ -6,10 +6,19 @@ import {
     StatusBar,
     TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React,{useState,useEffect} from "react";
+import {projectGetSingle} from "../../axios/axios";
 import ReportsOrders from "../../components/forecast/ReportsOrders.component";
 
-const Reports_Forecast = () => {
+const Reports_Forecast = ({route}) => {
+    const [project, setProject] = useState([]);
+    console.log(route.params.projectid,'lol');
+    useEffect(() => {
+        projectGetSingle(route.params.projectid).then((res) => {
+            setProject(res[0]);
+        }
+        );
+    }, []);
     return (
         <>
             <StatusBar
@@ -22,7 +31,7 @@ const Reports_Forecast = () => {
                 <Text style={styles.text}>Reports vise orders </Text>
             </View>
             <ScrollView>
-                <ReportsOrders />
+                <ReportsOrders project= {project}/>
             </ScrollView>
         </>
     );

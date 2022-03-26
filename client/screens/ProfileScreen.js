@@ -59,7 +59,7 @@ const ProfileScreen = ({navigation}) => {
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.options}
-                onPress={() => navigation.push("Reports")}
+                onPress={() => navigation.push("ShowProjects")}
             >
                 <Text
                     style={{

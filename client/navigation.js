@@ -10,6 +10,8 @@ import Reports from "./screens/forecast/Reports";
 import Actual_Forecast_Stock from "./screens/forecast/Actual_Forecast_Stock";
 import Reports_Forecast from "./screens/forecast/Reports_Forecast";
 import Reports_Orders from "./screens/forecast/Reports_Orders";
+import ShowProjects from "./screens/reports/showProjects";
+import Password from "./screens/Password";
 const Stack = createNativeStackNavigator();
 
 const screenOptions = {
@@ -20,20 +22,26 @@ const NavigationSignUp = () => {
     return (
         <>
             <NavigationContainer
-                initialRouteName="Reports_Forecast"
+                initialRouteName="LoginScreen"
                 screenOptions={screenOptions}
             >
                 <Stack.Navigator>
+                <Stack.Screen
+                        name="LoginScreen"
+                        component={LoginScreen}
+                        options={screenOptions}
+                    />
+                    <Stack.Screen
+                        name="PasswordScreen"
+                        component={Password}
+                        options={screenOptions}
+                    />
                     <Stack.Screen
                         name="ProfileScreen"
                         component={ProfileScreen}
                         options={screenOptions}
                     />
-                    <Stack.Screen
-                        name="LoginScreen"
-                        component={LoginScreen}
-                        options={screenOptions}
-                    />
+                    
                     <Stack.Screen
                         name="RegisterScreen"
                         component={RegisterScreen}
@@ -64,6 +72,12 @@ const NavigationSignUp = () => {
                         component={Reports_Orders}
                         options={screenOptions}
                     />
+                <Stack.Screen
+                        name="ShowProjects"
+                        component={ShowProjects}
+                        options={screenOptions}
+                    />
+                    
                 </Stack.Navigator>
             </NavigationContainer>
         </>
