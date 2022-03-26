@@ -50,8 +50,7 @@ const LoginScreen = () => {
       if(errorMessage == "The email address is already in use by another account."){
         navigation.push("PasswordScreen");
       }
-      // navigation.push("PasswordScreen")
-			// ..
+      
 		  });
 	  }
     });
