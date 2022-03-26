@@ -38,36 +38,25 @@ const Forecast = () => {
 	};
 
 	class InitialFormValuesClass {
-
 		constructor(months = 1) {
-			this.forecast_type = type;
 			this.forecast_name = '';
-			this.no_of_months = dropdownMonths;
 			this.forecast_name = '';
+			this.remarks = '';
 			for (let i = 0; i < months; i++) {
 				this[`forecast_month${i}`] = '';
 			}
-			this.remarks = '';
 		}
 	}
 
 	return (
 		<Formik
-			initialValues={{
-				forecast_type: type,
-				no_of_months: dropdownMonths,
-				forecast_name: '',
-				forecast_month1: '',
-				forecast_month2: '',
-				forecast_month3: '',
-				
-			}}
+			initialValues={initialFormValues}
 			// validationSchema={forecast_type_schema}
 			validateOnMount={true}
-			onSubmit={(values) => {
-				console.log(values, 'values');
-				projectCreate(values)
-				console.log('jij');
+			onSubmit={async (values) => {
+				await projectCreate(values).then((res) => {
+					console.log(res.data);
+				});
 			}}
 		>
 			{({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
@@ -82,6 +71,7 @@ const Forecast = () => {
 										selectedValue={dropdown}
 										onValueChange={(itemValue, itemIndex) => {
 											setDropdown(itemValue);
+											setType(itemValue);
 										}}
 									>
 										<Picker.Item
@@ -102,15 +92,15 @@ const Forecast = () => {
 												style={styles.picker}
 												selectedValue={dropdownMonths}
 												onValueChange={(itemValue, itemIndex) => {
-
 													handleNoOfMonthsChange(parseInt(itemValue));
 													setDropdownMonths(parseInt(itemValue));
-													setType(itemValue);
+
 													console.log(itemValue, 'itemValue');
-													const initial = new InitialFormValuesClass(parseInt(itemValue));
+													const initial = new InitialFormValuesClass(
+														parseInt(itemValue)
+													);
 													setInitialFormValues(initial);
 													console.log(type);
-													
 												}}
 											>
 												<Picker.Item
@@ -232,9 +222,8 @@ const Forecast = () => {
 									<TouchableOpacity
 										style={styles.button}
 										onPress={() => {
-											 handleSubmit();
-											
-										  }}
+											handleSubmit();
+										}}
 									>
 										<Text style={{ color: 'white' }}>Submit</Text>
 									</TouchableOpacity>
