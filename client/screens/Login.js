@@ -4,6 +4,7 @@ import { auth } from "../firebase/firebase";
 const Password = ({navigation}) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const handleLogin = () => {
     auth
       .signInWithEmailAndPassword(email.trim(), password)
@@ -17,8 +18,10 @@ const Password = ({navigation}) => {
         const errorCode = error.code;
         console.log(error);
         const errorMessage = error.message;
+        setErrorMessage(errorMessage);
       });
   };
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
@@ -34,8 +37,16 @@ const Password = ({navigation}) => {
         onChangeText={(text) => setPassword(text)}
         value={password}
       />
+      <Text>{errorMessage}</Text>
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.button}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={()=> navigation.push('LoginScreen')}>
+        <Text style={styles.button}>Sign up</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={()=> navigation.push('PasswordReset')}>
+        <Text style={styles.button}>Reset Password?</Text>
       </TouchableOpacity>
     </View>
   );

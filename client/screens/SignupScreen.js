@@ -23,12 +23,13 @@ const LoginScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
     await getCustomerWithMail(email).then((res) => {
       
 	  if(res[0] === undefined){
-      console.log("====================================x");
+      setErrorMessage("Email not found");
 	  } else {
 		console.log("====================================");
      	 console.log(res[0]);
@@ -45,16 +46,20 @@ const LoginScreen = () => {
 			const errorCode = error.code;
 			const errorMessage = error.message;
 			console.log(error);	
-      navigation.push("PasswordScreen")
+      setErrorMessage(errorMessage);
+      if(errorMessage == "The email address is already in use by another account."){
+        navigation.push("PasswordScreen");
+      }
+      // navigation.push("PasswordScreen")
 			// ..
 		  });
 	  }
     });
   };
-
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>LoginScreen</Text>
+      <Text style={styles.title}>Sign Up</Text>
       <TextInput
         placeholder="Enter your ID"
         style={styles.input}
@@ -67,9 +72,11 @@ const LoginScreen = () => {
         onChangeText={(text) => setPassword(text)}
         value={password}
       />
+      <Text>{errorMessage}</Text>
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.button}>Login</Text>
+        <Text style={styles.button}>Sign up</Text>
       </TouchableOpacity>
+   
     </View>
   );
 };
