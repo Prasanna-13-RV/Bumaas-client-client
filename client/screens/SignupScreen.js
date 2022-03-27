@@ -37,10 +37,10 @@ const LoginScreen = () => {
 						// Signed in
 						const user = userCredential.user;
 						console.log(user);
-
-						navigation.push('ProfileScreen', {
-							customer_id: res[0].customer_id
-						});
+            
+						// navigation.push('ProfileScreen', {
+						// 	customer_id: res[0].customer_id
+						// });
 					})
 					.catch((error) => {
 						const errorCode = error.code;
@@ -55,6 +55,7 @@ const LoginScreen = () => {
 						}
 					});
 			}
+      
 		});
 	};
 

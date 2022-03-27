@@ -7,31 +7,30 @@ import {
 } from "react-native";
 import React, {useState} from "react";
 import {auth} from "../firebase/firebase";
+import { getCustomerWithMail } from "../axios/axios";
 const Password = ({navigation}) => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const handleLogin = async () => {
-        await getCustomerWithMail(email).then((res) => {
-            if (res[0] === undefined) {
-                setErrorMessage("Email not found");
-            } else {
-                auth.signInWithEmailAndPassword(email.trim(), password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        console.log(user);
-                        console.log(user.displayName);
-                        navigation.push("ProfileScreen", {
-                            customer_id: res[0].customer_id,
-                        });
-                    })
-                    .catch((error) => {
-                        const errorCode = error.code;
-                        console.log(error);
-                        const errorMessage = error.message;
-                        setErrorMessage(errorMessage);
-                    });
-            }
+        auth.signInWithEmailAndPassword(email.trim(), password)
+        .then(async (userCredential) => {
+            const user = userCredential.user;
+            
+            await getCustomerWithMail(email).then((res)=> {
+                console.log(res);
+                navigation.push("ProfileScreen", {
+                    customer_id: res[0].customer_id,
+                });
+            })
+            .catch(error => console.log(error))
+            
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            console.log(error);
+            const errorMessage = error.message;
+            setErrorMessage(errorMessage);
         });
     };
 
