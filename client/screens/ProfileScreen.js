@@ -2,12 +2,11 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useEffect } from 'react';
 
 import { auth } from '../firebase/firebase';
-import { route } from '../../server/routes/route';
 
 const ProfileScreen = ({ navigation, route }) => {
 	// useEffect(() => {
 	// 	const unsubscribe  = auth.onAuthStateChanged((user) => {
-	// 		if (!user) {
+	// 		if (!buser) {
 	// 			navigation.push('LoginScreen');
 	// 		}
 	// 	});
