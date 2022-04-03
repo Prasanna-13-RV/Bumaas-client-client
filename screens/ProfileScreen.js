@@ -32,7 +32,7 @@ const ProfileScreen = ({ navigation, route }) => {
 
 			<TouchableOpacity
 				style={styles.options}
-				onPress={() => navigation.push('Forecast')}
+				onPress={() => navigation.push('Forecast',{customer_id: route.params.customer_id})}
 			>
 				<Text
 					style={{

@@ -30,6 +30,7 @@ const LoginScreen = () => {
 			if (res[0] === undefined) {
 				setErrorMessage('Email not found');
 			} else {
+				console.log('insider');
 				// const password = email;
 				auth
 					.createUserWithEmailAndPassword(email.trim(), password)
@@ -38,9 +39,9 @@ const LoginScreen = () => {
 						const user = userCredential.user;
 						console.log(user);
             
-						// navigation.push('ProfileScreen', {
-						// 	customer_id: res[0].customer_id
-						// });
+						navigation.push('ProfileScreen', {
+							customer_id: res[0].customer_id
+						});
 					})
 					.catch((error) => {
 						const errorCode = error.code;

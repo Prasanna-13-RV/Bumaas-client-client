@@ -13,9 +13,10 @@ import { projectGetSingle } from '../../axios/axios';
 const Reports_Forecast = ({ route }) => {
 	const [project, setProject] = useState([]);
 	useEffect(() => {
-		projectGetSingle(route.params.projectid, route.params.customer_id).then(
+		projectGetSingle(route.params.forecastid).then(
 			(res) => {
-				setProject(res[0]);
+				setProject(res);
+				console.log(res,'kk');
 			}
 		);
 	}, []);

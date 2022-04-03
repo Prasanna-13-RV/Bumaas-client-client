@@ -10,7 +10,7 @@ import {
 import { SearchBar } from 'react-native-elements';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { projectGet } from '../../axios/axios';
+import { forecastGet } from '../../axios/axios';
 
 const showProjects = ({ route }) => {
 	const navigation = useNavigation();
@@ -19,7 +19,7 @@ const showProjects = ({ route }) => {
 
 	const [searchProject, setSearchProject] = useState([]);
 	useEffect(async () => {
-		await projectGet(route.params.customer_id).then((res) => {
+		await forecastGet(route.params.customer_id).then((res) => {
 			setProjects(res);
 			console.log(res);
 		});
@@ -54,8 +54,7 @@ const showProjects = ({ route }) => {
 						<TouchableOpacity
 							onPress={() =>
 								navigation.push('Reports', {
-									projectid: project.project_id,
-									customer_id: route.params.customer_id
+									forecastid: project.id
 								})
 							}
 						>
@@ -70,8 +69,7 @@ const showProjects = ({ route }) => {
 							<TouchableOpacity
 								onPress={() =>
 									navigation.push('Reports', {
-										projectid: project.project_id,
-										customer_id: route.params.customer_id
+										forecastid: project.id
 									})
 								}
 							>

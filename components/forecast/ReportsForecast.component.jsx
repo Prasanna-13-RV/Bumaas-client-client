@@ -1,11 +1,16 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect ,useState} from 'react';
 
 const ReportsForecast = ({ project }) => {
+	// console.log(project['project'][0],'kok');
+	const [projects,setProjects] = useState(project)
+	useEffect(()=> {
+
+	},[project])
 	return (
 		// <TouchableOpacity>
 		<>
-			{project && (
+			{project['forecast'] && (
 				<>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Forecast No</Text>
@@ -14,37 +19,37 @@ const ReportsForecast = ({ project }) => {
 
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Project Name </Text>
-						<Text style={styles.text_answer}>{project.project_name}</Text>
+						<Text style={styles.text_answer}>{project['forecast'][0].project_name}</Text>
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Customer part no</Text>
-						<Text style={styles.text_answer}>{project.customer_part_no}</Text>
+						<Text style={styles.text_answer}>{project['project'][0].customer_part_no}</Text>
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>BEST Part no </Text>
-						<Text style={styles.text_answer}>{project.part_no}</Text>
+						<Text style={styles.text_answer}>{project['project'][0].part_no}</Text>
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Description </Text>
-						<Text style={styles.text_answer}>{project.description}</Text>
+						<Text style={styles.text_answer}>{project['project'][0].description}</Text>
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Product Group</Text>
-						<Text style={styles.text_answer}>{project.product_group}</Text>
+						<Text style={styles.text_answer}>{project['project'][0].product_group}</Text>
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Weight /Pc</Text>
-						<Text style={styles.text_answer}>{project.weight}</Text>
+						<Text style={styles.text_answer}>{project['project'][0].weight}</Text>
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Standard Box Quantity</Text>
 						<Text style={styles.text_answer}>
-							{project.standard_box_quantity}
+							{project['project'][0].standard_box_quantity}
 						</Text>
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Norms per Project</Text>
-						<Text style={styles.text_answer}>{project.norms_per_project}</Text>
+						<Text style={styles.text_answer}>{project['project'][0].norms_per_project}</Text>
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>
@@ -66,11 +71,11 @@ const ReportsForecast = ({ project }) => {
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Safety stock </Text>
-						<Text style={styles.text_answer}>{project.safety_stock}</Text>
+						<Text style={styles.text_answer}>{project['project'][0].safety_stock}</Text>
 					</View>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Re Order Level</Text>
-						<Text style={styles.text_answer}>{project.re_order_level}</Text>
+						<Text style={styles.text_answer}>{project['project'][0].re_order_level}</Text>
 					</View>
 				</>
 			)}
