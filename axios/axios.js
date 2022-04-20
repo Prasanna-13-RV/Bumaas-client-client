@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const baseUrl = 'http://192.168.0.104:8090';
+// const baseUrl = 'http://192.168.0.104:8090';
+const baseUrl = 'https://bummas-client-server.herokuapp.com';
 
 export const projectGet = async (customer_id) => {
 	return await axios.get(`${baseUrl}/getproject/${customer_id}`).then((res) => {
