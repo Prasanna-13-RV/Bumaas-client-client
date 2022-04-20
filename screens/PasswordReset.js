@@ -37,7 +37,7 @@ const PasswordReset = () => {
             />
             <Text>{errorMessage}</Text>
             <TouchableOpacity style={styles.button} onPress={handleReset}>
-                <Text style={styles.button}>Submit</Text>
+                <Text >Submit</Text>
             </TouchableOpacity>
         </View>
     );
@@ -52,24 +52,26 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: "#609BEB",
+        borderRadius: 30,
         width: "80%",
         marginBottom: 10,
-        padding: 10,
+        padding: 15,
     },
     title: {
         fontSize: 20,
         marginBottom: 10,
     },
     button: {
-        backgroundColor: "blue",
-        padding: 5,
-        paddingLeft: 10,
-        paddingRight: 10,
-        alignContent: "center",
-        justifyContent: "center",
-        fontSize: 15,
-        color: "white",
-        margin: 2,
+        borderWidth: 3,
+		borderColor: '#609BEB',
+		padding: 10,
+		width: '30%',
+        margin: 5,
+        color: 'black',
+		// textAlign: 'center',
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 30,
     },
 });

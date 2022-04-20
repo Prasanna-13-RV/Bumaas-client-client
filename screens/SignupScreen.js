@@ -77,7 +77,7 @@ const LoginScreen = () => {
 			/>
 			<Text>{errorMessage}</Text>
 			<TouchableOpacity style={styles.button} onPress={handleLogin}>
-				<Text style={styles.button}>Sign up</Text>
+				<Text>Sign up</Text>
 			</TouchableOpacity>
 		</View>
 	);
@@ -94,19 +94,28 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		borderWidth: 1,
-		borderColor: 'black',
+		borderColor: '#609BEB',
 		width: '80%',
+		borderRadius: 30,
 		marginBottom: 10,
-		padding: 10
+		padding: 15
 	},
 	title: {
 		fontSize: 30,
-		marginBottom: 10
+		marginBottom: 30,
+		color: '#609BEB'
 	},
 	button: {
-		backgroundColor: 'blue',
+		borderWidth: 3,
+		borderColor: '#609BEB',
 		padding: 10,
-		color: 'white'
+		width: '30%',
+        margin: 5,
+        color: 'black',
+		// textAlign: 'center',
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 30,
 	},
 	text: {
 		marginTop: 10,

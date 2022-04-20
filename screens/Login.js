@@ -18,10 +18,12 @@ const Password = ({navigation}) => {
             const user = userCredential.user;
             
             await getCustomerWithMail(email).then((res)=> {
-                console.log(res);
-                navigation.push("ProfileScreen", {
-                    customer_id: res[0].customer_id,
-                });
+                
+                    navigation.push("ProfileScreen", {
+                        customer_id: res[0].customer_id,
+                    });
+                
+                
             })
             .catch(error => console.log(error))
             
@@ -52,23 +54,26 @@ const Password = ({navigation}) => {
                 value={password}
             />
             <Text>{errorMessage}</Text>
+            <TouchableOpacity
+                    style={{
+                        marginBottom:15
+                    }}
+                    onPress={() => navigation.push("PasswordReset")}
+                >
+                    <Text>Reset Password?</Text>
+                </TouchableOpacity>
             <View style={styles.allbutton}>
                 <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                    <Text style={styles.button}>Login</Text>
+                    <Text>Login</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => navigation.push("LoginScreen")}
                 >
-                    <Text style={styles.button}>Sign up</Text>
+                    <Text>Sign up</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.push("PasswordReset")}
-                >
-                    <Text style={styles.button}>Reset Password?</Text>
-                </TouchableOpacity>
+                
             </View>
         </View>
     );
@@ -83,27 +88,34 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: '#609BEB',
+        borderRadius: 30,
         width: "80%",
         marginBottom: 10,
-        padding: 10,
+        padding: 15,
     },
     title: {
         fontSize: 30,
-        marginBottom: 10,
+        marginBottom: 30,
+        color: '#609BEB',
     },
     allbutton: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignContent: "center",
         width: "80%",
     },
     button: {
-        backgroundColor: "blue",
-        padding: 5,
-        margin: 2,
-        // borderRadius: 10,
-        color: "white",
+        borderWidth: 3,
+		borderColor: '#609BEB',
+		padding: 10,
+		width: '30%',
+        margin: 5,
+		// textAlign: 'center',
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 30,
+		// color: 'white'
     },
     text: {
         marginTop: 10,

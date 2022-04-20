@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
+
 import * as yup from "yup";
 import { useNavigation } from "@react-navigation/native";
 import { projectCreate, projectGet } from "../../axios/axios";
@@ -26,7 +27,9 @@ const Forecast = ({ route }) => {
   const [dropdown, setDropdown] = useState();
   const [noOfMonths, setNoOfMonths] = useState([1, 2, 3]);
   const [dropdownMonths, setDropdownMonths] = useState(1);
-  const [initialFormValues, setInitialFormValues] = useState({});
+  const [initialFormValues, setInitialFormValues] = useState({
+    forecast_name: ''
+  });
   const [forecast, setForecast] = useState("");
   const [type, setType] = useState("");
 
@@ -75,6 +78,8 @@ const Forecast = ({ route }) => {
               <View style={[styles.next_container, styles.left_container]}>
                 <View style={styles.sub_container}>
                   <Text style={styles.text}>Forecast Form</Text>
+                  <View 
+                  style={{ borderWidth: 1, borderColor: '#609BEB', borderRadius: 30,marginTop:10, }}>
                   <Picker
                     style={styles.picker}
                     selectedValue={dropdown}
@@ -93,11 +98,12 @@ const Forecast = ({ route }) => {
                       label="Monthly"
                       value="monthly"
                     />
-                  </Picker>
+                  </Picker></View>
                   {dropdown == "monthly" ? (
                     <>
                       <Text style={styles.text}>Forecast Type</Text>
-                      <Picker
+                      <View
+                      style={{ borderWidth: 1, borderColor: '#609BEB', borderRadius: 30,marginTop:10, }}><Picker
                         style={styles.picker}
                         selectedValue={dropdownMonths}
                         onValueChange={(itemValue, itemIndex) => {
@@ -172,7 +178,7 @@ const Forecast = ({ route }) => {
                           label="12"
                           value="12"
                         />
-                      </Picker>
+                      </Picker></View>
                     </>
                   ) : null}
                 </View>
@@ -191,9 +197,10 @@ const Forecast = ({ route }) => {
                 
                 <View style={styles.sub_container}>
                   <Text style={styles.text}>Project Name</Text>
-                 
+                 <View
+                 style={{ borderWidth: 1, borderColor: '#609BEB', borderRadius: 30,marginTop:10, }}>
                   <Picker
-                    style={{ width: "100%" }}
+                    style={{ width:'100%' }}
                     mode="dropdown"
                     placeholder="Forecast Project Name"
                     onValueChange={
@@ -210,7 +217,7 @@ const Forecast = ({ route }) => {
                     {project.length > 0 && project.map((it) => (
                       <Picker.Item label={it.project_name} value={it.project_name} />
                     ))}
-                  </Picker>
+                  </Picker></View>
                 </View>
 
                 {noOfMonths.map((month, index) => {
@@ -242,9 +249,10 @@ const Forecast = ({ route }) => {
                     style={styles.button}
                     onPress={() => {
                       handleSubmit();
+                      console.log(values);
                     }}
                   >
-                    <Text style={{ color: "white" }}>Submit</Text>
+                    <Text >Submit</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -280,44 +288,44 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
   },
   text_input: {
     width: "100%",
-    height: 40,
-    borderColor: "gray",
+    height: 60,
+    borderColor: "#609BEB",
     borderWidth: 1,
     marginTop: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderRadius: 5,
+    padding:15,
+    borderRadius: 30,
   },
   picker: {
     width: "100%",
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginTop: 10,
+    height:40
+    // marginTop: 10,
   },
   picker_item: {
     height: 40,
     width: "100%",
   },
   button: {
-    width: "100%",
-    height: 40,
-    color: "white",
-    backgroundColor: "blue",
+    width: "50%",
+    height: 50,
+    color: "black",
+    borderColor: "#609BEB",
+    borderWidth:3,
     justifyContent: "center",
+    marginLeft: 'auto',
+    marginRight: 'auto',
     alignItems: "center",
     marginTop: 10,
-    borderRadius: 5,
+    borderRadius: 30,
   },
   box: {
     width: "100%",
     height: 40,
-    borderColor: "gray",
+    borderColor: "#609BEB",
     borderWidth: 1,
     marginTop: 10,
     paddingLeft: 10,
@@ -332,7 +340,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#609BEB",
     borderRadius: 5,
     fontSize: 13,
     textAlignVertical: "top",

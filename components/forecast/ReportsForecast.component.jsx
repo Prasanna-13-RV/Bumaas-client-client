@@ -14,7 +14,7 @@ const ReportsForecast = ({ project }) => {
 				<>
 					<View style={styles.viewtable}>
 						<Text style={styles.text_question}>Forecast No</Text>
-						<Text style={styles.text_answer}>2345sdfgsdf</Text>
+						<Text style={styles.text_answer}>{project['forecast'][0].forecast_id}</Text>
 					</View>
 
 					<View style={styles.viewtable}>
