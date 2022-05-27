@@ -30,7 +30,7 @@ const PasswordReset = () => {
         <View style={styles.container}>
             <Text style={styles.title}>Password Reset</Text>
             <TextInput
-                placeholder="Enter your password"
+                placeholder="Enter your email"
                 style={styles.input}
                 onChangeText={(text) => setEmail(text)}
                 value={email}

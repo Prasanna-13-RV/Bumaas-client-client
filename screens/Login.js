@@ -8,7 +8,11 @@ import {
 import React, {useState} from "react";
 import {auth} from "../firebase/firebase";
 import { getCustomerWithMail } from "../axios/axios";
-const Password = ({navigation}) => {
+import { connect } from 'react-redux';
+import { setForecastid } from "../actions";
+import { bindActionCreators } from 'redux';
+import { db } from "../firebase/firebase";
+const Password = ({navigation, setForecastid }) => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -17,17 +21,22 @@ const Password = ({navigation}) => {
         .then(async (userCredential) => {
             const user = userCredential.user;
             
-            await getCustomerWithMail(email).then((res)=> {
+             const customerRef = db.collection("custmast").where("Email", "==", email || email.capitalize());
+    const customerMail = await customerRef.get();
+    if (customerMail.empty) {
+		console.log(customerMail.docs[0].data());
+      setErrorMessage("No user found with this email");
+      return;
+    }
+    const customer = customerMail.docs[0].data();
                 
-                    navigation.push("ProfileScreen", {
-                        customer_id: res[0].customer_id,
-                    });
-                
-                
+    setForecastid(customer.customerid);
+    navigation.push("NavigationSignUp", {
+      customer_id: customer.customerid,
+    });
             })
-            .catch(error => console.log(error))
             
-        })
+        
         .catch((error) => {
             const errorCode = error.code;
             console.log(error);
@@ -69,7 +78,7 @@ const Password = ({navigation}) => {
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.push("LoginScreen")}
+                    onPress={() => navigation.push("SignupScreen")}
                 >
                     <Text>Sign up</Text>
                 </TouchableOpacity>
@@ -122,5 +131,12 @@ const styles = StyleSheet.create({
         color: "red",
     },
 });
-
-export default Password;
+const mapStateToProps = (state) => {
+	return state
+  };
+const mapDispatchToProps = dispatch => (
+	bindActionCreators({
+	  setForecastid,
+	}, dispatch)
+  );
+export default connect(mapStateToProps,mapDispatchToProps)(Password);

@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity,ImageBackground } from 'react-native';
 import React, { useEffect } from 'react';
-
-const Reports = ({ navigation, route }) => {
-	console.log(route.params.forecastid);
+import { connect } from 'react-redux';
+const image = { uri: "https://wallpaperaccess.com/full/3966936.jpg" };
+const Reports = ({ navigation, route,forecastid }) => {
+	console.log(forecastid,'fian');
 	return (
-		<View style={styles.container}>
+		<ImageBackground source={image} resizeMode="cover" style={styles.image}>
 			{/* <TouchableOpacity style={styles.button} onPress={handleSubmit}>
 				<Text style={styles.btn}>Sign Out</Text>
 			</TouchableOpacity> */}
@@ -12,14 +13,15 @@ const Reports = ({ navigation, route }) => {
 			<TouchableOpacity
 				style={styles.options}
 				onPress={() =>
-					navigation.push('Reports_Forecast', {
-						forecastid: route.params.forecastid
+					navigation.push('forecastList', {
+						forecastid: forecastid.forecastid,
+						type: 'Forecast',
 					})
 				}
 			>
 				<Text
 					style={{
-						color: '#609BEB',
+						color: '#ffaa00',
 						fontSize: 16,
 						fontWeight: 'bold'
 					}}
@@ -30,14 +32,14 @@ const Reports = ({ navigation, route }) => {
 			<TouchableOpacity
 				style={styles.options}
 				onPress={() =>
-					navigation.push('Reports_Orders', {
-						forecastid: route.params.forecastid
+					navigation.push('OrderList', {
+						forecastid: forecastid.forecastid
 					})
 				}
 			>
 				<Text
 					style={{
-						color: '#609BEB',
+						color: '#ffaa00',
 						fontSize: 16,
 						fontWeight: 'bold'
 					}}
@@ -45,18 +47,47 @@ const Reports = ({ navigation, route }) => {
 					PROJECT VISE ORDERS
 				</Text>
 			</TouchableOpacity>
-		</View>
+			<TouchableOpacity
+				style={styles.options}
+				onPress={() =>
+					navigation.push('forecastList', {
+						forecastid: forecastid.forecastid,
+						type: 'performance'
+					})
+				}
+			>
+				<Text
+					style={{
+						color: '#ffaa00',
+						fontSize: 16,
+						fontWeight: 'bold'
+					}}
+				>
+					SERVICE PERFORMANCE
+				</Text>
+			</TouchableOpacity>
+		</ImageBackground>
 	);
 };
-
-export default Reports;
+const mapStateToProps = (state) => {
+	const {forecastid} = state
+	console.log('====================================');
+	console.log(forecastid,'sss');
+	console.log('====================================');
+	return{forecastid}
+  };
+export default connect(mapStateToProps)(Reports);
 
 const styles = StyleSheet.create({
+	image: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: 'center',
+		
+	  },
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center'
 	},
 	button: {
 		backgroundColor: 'blue',
@@ -68,13 +99,13 @@ const styles = StyleSheet.create({
 	},
 	options: {
 		width: 320,
-		height: 140,
-		backgroundColor: '#fff',
-		borderWidth: 1,
-		borderColor: '#609BEB',
-		shadowColor: '#609BEB',
-		elevation: 5,
-		borderRadius: 10,
+		height: 80,
+		backgroundColor: 'rgba(0,0,0,.2)',
+		borderWidth: 1.5,
+		borderColor: '#ffaa00',
+		// shadowColor: '#609BEB',
+		// elevation: 5,
+		borderRadius: 50,
 		textAlign: 'center',
 		alignItems: 'center',
 		justifyContent: 'center',

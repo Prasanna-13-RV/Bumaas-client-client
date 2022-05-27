@@ -4,42 +4,54 @@ import {
 	View,
 	ScrollView,
 	StatusBar,
-	TouchableOpacity
+	TouchableOpacity,
+	ImageBackground
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { projectGetSingle } from '../../axios/axios';
-import ReportsOrders from '../../components/forecast/ReportsOrders.component';
+const image = { uri: "https://wallpaperaccess.com/full/3966936.jpg" };
 
-const Reports_Forecast = ({ route }) => {
+import React, { useState, useEffect } from 'react';
+import ReportsOrder from '../../components/forecast/ReportsOrders.component';
+import { projectGetSingle } from '../../axios/axios';
+import { db } from '../../firebase/firebase';
+const Reports_Orders = ({ route }) => {
+	console.log(route.params.forecastid,'ll');
 	const [project, setProject] = useState([]);
-	useEffect(() => {
-		projectGetSingle(route.params.projectid, route.params.customer_id).then(
-			(res) => {
-				setProject(res[0]);
-			}
-		);
+	const { forecastid } = route.params;
+	const forecastRef = db.collection('orders').where('orderid', '==', forecastid);
+	useEffect(async() => {
+		const forecast = await forecastRef.get();
+		console.log(forecast.docs.map((doc) => doc.data()),'llll');
+		setProject(forecast.docs.map((doc) => doc.data()));
+		// projectGetSingle(route.params.forecastid).then(
+		// 	(res) => {
+		// 		setProject(res);
+		// 		console.log(res,'kk');
+		// 	}
+		// );
 	}, []);
 	return (
 		<>
-			<StatusBar
-				barStyle='dark-content'
-				hidden={false}
-				backgroundColor='#00BCD4'
-				translucent={true}
-			/>
+			
+			<ImageBackground source={image} resizeMode="cover" style={styles.image}>
 			<View style={styles.container}>
-				<Text style={styles.text}>Reports vise orders </Text>
+				<Text style={styles.text}>PROJECT VISE ORDERS 
+</Text>
 			</View>
 			<ScrollView>
-				<ReportsOrders project={project} />
-			</ScrollView>
+				{project && console.log(project)}
+				{project && <ReportsOrder forecast={project} />}
+			</ScrollView></ImageBackground>
 		</>
 	);
 };
 
-export default Reports_Forecast;
+export default Reports_Orders;
 
 const styles = StyleSheet.create({
+	image: {
+		flex: 1,
+		justifyContent: "center",
+	  },
 	text: {
 		fontSize: 20,
 		fontWeight: 'bold',
@@ -47,6 +59,7 @@ const styles = StyleSheet.create({
 		alignContent: 'center',
 		justifyContent: 'center',
 		width: '100%',
-		marginLeft: '25%'
+		// marginLeft: '25%'
+		textAlign: 'center'
 	}
 });

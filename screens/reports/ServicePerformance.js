@@ -4,10 +4,8 @@ import {
 	View,
 	ScrollView,
 	StatusBar,
-	TouchableOpacity,
-	ImageBackground
+	TouchableOpacity
 } from 'react-native';
-const image = { uri: "https://wallpaperaccess.com/full/3966936.jpg" };
 import React, { useState, useEffect } from 'react';
 import ReportsForecast from '../../components/forecast/ReportsForecast.component';
 import { projectGetSingle } from '../../axios/axios';
@@ -36,16 +34,13 @@ const Reports_Forecast = ({ route }) => {
 				backgroundColor='#00BCD4'
 				translucent={true}
 			/>
-			<ImageBackground source={image} resizeMode="cover" style={styles.image}>
 			<View style={styles.container}>
-				<Text style={styles.text}>{route.params.type == 'performance'?'SERVICE PERFORMANCE' : 'PROJECT VISE FORECAST'}
-</Text>
+				<Text style={styles.text}>Reports & Forecast</Text>
 			</View>
 			<ScrollView>
 				{project && console.log(project)}
-				{project && <ReportsForecast forecast={project} type={route.params.type} />}
+				{project && <ReportsForecast forecast={project} />}
 			</ScrollView>
-			</ImageBackground>
 		</>
 	);
 };
@@ -58,13 +53,8 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginTop: 50,
 		alignContent: 'center',
-		textAlign: 'center',
 		justifyContent: 'center',
 		width: '100%',
-		// marginLeft: '25%'
-	},
-	image: {
-		flex: 1,
-		justifyContent: "center",
-	  },
+		marginLeft: '25%'
+	}
 });
