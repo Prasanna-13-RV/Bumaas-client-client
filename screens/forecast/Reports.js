@@ -2,14 +2,27 @@ import { StyleSheet, Text, View, TouchableOpacity,ImageBackground } from 'react-
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 const image = { uri: "https://wallpaperaccess.com/full/3966936.jpg" };
+import { LinearGradient } from "expo-linear-gradient";
 const Reports = ({ navigation, route,forecastid }) => {
 	console.log(forecastid,'fian');
 	return (
-		<ImageBackground source={image} resizeMode="cover" style={styles.image}>
+		<View style={styles.image}>
 			{/* <TouchableOpacity style={styles.button} onPress={handleSubmit}>
 				<Text style={styles.btn}>Sign Out</Text>
 			</TouchableOpacity> */}
-
+		<LinearGradient
+                        style={{
+                        //   width: "100%",
+                         
+						borderRadius: 5,
+						marginBottom: 20,
+						elevation: 2,
+                          // backgroundColor: "#DFF6FF",
+                        }}
+                        start={[0, 1]}
+                        end={[1, 0]}
+                        colors={["#FF8489", "#D5ADC8"]}
+                      >
 			<TouchableOpacity
 				style={styles.options}
 				onPress={() =>
@@ -21,15 +34,27 @@ const Reports = ({ navigation, route,forecastid }) => {
 			>
 				<Text
 					style={{
-						color: '#ffaa00',
+						color: '#fff',
 						fontSize: 16,
-						fontWeight: 'bold'
+						fontWeight: 'bold',
+						
 					}}
 				>
 					PROJECT VISE FORECAST
 				</Text>
-			</TouchableOpacity>
-			<TouchableOpacity
+			</TouchableOpacity></LinearGradient>
+			<LinearGradient
+                        style={{
+                        //   width: "100%",
+						elevation: 2,
+						borderRadius: 5,
+						marginBottom: 20,
+                          // backgroundColor: "#DFF6FF",
+                        }}
+                        start={[0, 1]}
+                        end={[1, 0]}
+                        colors={["#FF8489", "#D5ADC8"]}
+                      ><TouchableOpacity
 				style={styles.options}
 				onPress={() =>
 					navigation.push('OrderList', {
@@ -39,15 +64,26 @@ const Reports = ({ navigation, route,forecastid }) => {
 			>
 				<Text
 					style={{
-						color: '#ffaa00',
+						color: '#fff',
 						fontSize: 16,
 						fontWeight: 'bold'
 					}}
 				>
 					PROJECT VISE ORDERS
 				</Text>
-			</TouchableOpacity>
-			<TouchableOpacity
+			</TouchableOpacity></LinearGradient>
+			<LinearGradient
+                        style={{
+                        //   width: "100%",
+                         
+						borderRadius: 5,
+                          elevation: 2,
+                          // backgroundColor: "#DFF6FF",
+                        }}
+                        start={[0, 1]}
+                        end={[1, 0]}
+                        colors={["#FF8489", "#D5ADC8"]}
+                      ><TouchableOpacity
 				style={styles.options}
 				onPress={() =>
 					navigation.push('forecastList', {
@@ -58,15 +94,15 @@ const Reports = ({ navigation, route,forecastid }) => {
 			>
 				<Text
 					style={{
-						color: '#ffaa00',
+						color: '#fff',
 						fontSize: 16,
 						fontWeight: 'bold'
 					}}
 				>
 					SERVICE PERFORMANCE
 				</Text>
-			</TouchableOpacity>
-		</ImageBackground>
+			</TouchableOpacity></LinearGradient>
+		</View>
 	);
 };
 const mapStateToProps = (state) => {
@@ -83,6 +119,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: 'center',
+		backgroundColor: '#fff'
 		
 	  },
 	container: {
@@ -100,16 +137,12 @@ const styles = StyleSheet.create({
 	options: {
 		width: 320,
 		height: 80,
-		backgroundColor: 'rgba(0,0,0,.2)',
-		borderWidth: 1.5,
-		borderColor: '#ffaa00',
-		// shadowColor: '#609BEB',
-		// elevation: 5,
-		borderRadius: 50,
+	
+		
 		textAlign: 'center',
 		alignItems: 'center',
 		justifyContent: 'center',
 		padding: 10,
-		marginVertical: 10
+		
 	}
 });

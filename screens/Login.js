@@ -17,11 +17,11 @@ const Password = ({navigation, setForecastid }) => {
     const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const handleLogin = async () => {
-        auth.signInWithEmailAndPassword(email.trim(), password)
+        auth.signInWithEmailAndPassword(email.trim(), password.trim())
         .then(async (userCredential) => {
             const user = userCredential.user;
             
-             const customerRef = db.collection("custmast").where("Email", "==", email || email.capitalize());
+             const customerRef = db.collection("custmast").where("Email", "==", email.trim() || email.capitalize());
     const customerMail = await customerRef.get();
     if (customerMail.empty) {
 		console.log(customerMail.docs[0].data());

@@ -9,6 +9,9 @@ import {
   StatusBar,
   ImageBackground,
 } from "react-native";
+import { showMessage, hideMessage } from "react-native-flash-message";
+import FlashMessage from "react-native-flash-message";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Formik } from "formik";
@@ -17,11 +20,12 @@ import * as yup from "yup";
 import { useNavigation } from "@react-navigation/native";
 import { forecastGet, projectCreate, projectGet } from "../../axios/axios";
 import { db } from "../../firebase/firebase";
+
 const Forecast = ({ route, forecastid }) => {
   const navigation = useNavigation();
   const [project, setProject] = useState([]);
   const [projectname, setProjectname] = useState("");
-  const [month, setMonth] = useState(null);
+  const [month, setMonth] = useState(1);
   const [name, setName] = useState("");
   const forecastGet = db.collection("Forecast");
   const orderGet = db.collection("orders");
@@ -137,7 +141,12 @@ const Forecast = ({ route, forecastid }) => {
 
   return (
     <>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+      <View style={styles.image}>
+      <StatusBar
+        animated={true}
+        backgroundColor="#D5ADC8"
+        
+     />
         <Formik
           initialValues={initialFormValues}
           // validationSchema={forecast_type_schema}
@@ -146,7 +155,8 @@ const Forecast = ({ route, forecastid }) => {
             // await projectCreate(values,route.params.customer_id).then((res) => {
             //   console.log(res.data);
             // });
-            console.log(values);
+            try{
+              console.log(values);
             const random = Math.random(10)
               .toString()
               .split(".")[1]
@@ -161,36 +171,70 @@ const Forecast = ({ route, forecastid }) => {
               customerid: forecastid.forecastid,
               Projectname: projectname,
               Remarks: values.remarks,
-              StartingMonth: monthData[month-1].value,
+              StartingMonth: monthData[month - 1].value,
               Qtm: months.map((month) => values[month]),
-              TimeStamp: new Date().toISOString()
+              TimeStamp: new Date().toISOString(),
             });
             await orderGet.doc(order_id).set({
+              forecastid: unique_id,
               orderid: order_id,
               customerid: forecastid.forecastid,
               Projectname: projectname,
               Remarks: values.remarks,
-               StartingMonth: monthData[month-1].value,
+              StartingMonth: monthData[month - 1].value,
               Qtm: months.map((month) => values[month]),
-              ShippingQuantity: 0,
+              ShippingQuantity: "-",
+              AcceptedDays: "-",
               Status: "Pending",
             });
-          }}
+            showMessage({
+              message: "Successfully Added",
+              type: "success",
+            });
+            }
+            catch(err){
+              console.log(err,'err');
+              showMessage({
+                message: "Invalid data. Please try again",
+                type: "danger",
+              });
+            }
+            
+           
+          }
+          
+        }
         >
           {({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
             <ScrollView>
+
               <>
-                <View style={styles.container}>
-                  <View style={[styles.next_container, styles.left_container]}>
+              <FlashMessage position="bottom" />
+              <LinearGradient
+        style={styles.image}
+        start={[0, 1]}
+        end={[1, 0]}
+        colors={["#FF8489", "#D5ADC8"]}
+      >
+                  <View style={[styles.next_container, styles.left_container,{
+                    borderBottomEndRadius: 20,
+                  }]}>
+                  
                     <View style={styles.sub_container}>
-                      <Text style={styles.text}>Forecast Form</Text>
+                      
+                      <Text style={[styles.text,{
+                        color: "#fff",
+                      }]}>Forecast Form</Text>
                       <View
                         style={{
                           borderWidth: 1,
                           borderColor: "white",
                           borderRadius: 30,
                           marginTop: 10,
+                          backgroundColor: "white",
+                          elevation: 3,
                         }}
+                        
                       >
                         <Picker
                           style={styles.picker}
@@ -212,18 +256,24 @@ const Forecast = ({ route, forecastid }) => {
                             value="monthly"
                           />
                         </Picker>
-                      </View>
+                      </View >
                       {dropdown == "monthly" ? (
                         <>
-                          <Text style={styles.text}>Forecast Type</Text>
+                          <Text style={[styles.text,{
+                        color: "#fff",
+                        marginTop: 10,
+                      }]}>Forecast Type</Text>
                           <View
-                            style={{
-                              borderWidth: 1,
-                              borderColor: "white",
-                              borderRadius: 30,
-                              marginTop: 10,
-                            }}
-                          >
+                        style={{
+                          borderWidth: 1,
+                          borderColor: "white",
+                          borderRadius: 30,
+                          marginTop: 10,
+                          backgroundColor: "white",
+                          elevation: 3,
+                        }}
+                        
+                      >
                             <Picker
                               style={styles.picker}
                               selectedValue={dropdownMonths}
@@ -238,7 +288,11 @@ const Forecast = ({ route, forecastid }) => {
                                 setInitialFormValues(initial);
                                 console.log(type);
                               }}
-                            >
+                            ><Picker.Item
+                            style={styles.picker_item}
+                            label="Select Type"
+                            value="0"
+                          />
                               <Picker.Item
                                 style={styles.picker_item}
                                 label="1"
@@ -311,23 +365,28 @@ const Forecast = ({ route, forecastid }) => {
 											console.log(values, 'values');
 										}}
 									>
-										<Text style={{ color: 'white' }}>Next Button</Text>
+										<Text s>tyle={{ color: 'white' }}>Next Button</Text>
 									</TouchableOpacity>
 								</View> */}
-                  </View>
-                  <View style={[styles.next_container, styles.right_container]}>
+                 
+                  
                     <View style={styles.sub_container}>
-                      <Text style={styles.text}>Project Name</Text>
+                      <Text style={[styles.text,{
+                        color: "#fff",
+                      }]}>Project Name</Text>
                       <View
                         style={{
                           borderWidth: 1,
                           borderColor: "white",
                           borderRadius: 30,
                           marginTop: 10,
+                          backgroundColor: "white",
+                          elevation: 3,
                         }}
+                        
                       >
                         <Picker
-                          style={{ width: "100%" }}
+                          style={styles.picker}
                           mode="dropdown"
                           placeholder="Forecast Project Name"
                           onValueChange={(itemValue) =>
@@ -348,33 +407,53 @@ const Forecast = ({ route, forecastid }) => {
                       </View>
                     </View>
                     <View style={styles.sub_container}>
-                      <Text style={styles.text}>Pick Month 1</Text>
+                      <Text style={[styles.text,{
+                        color: "#fff",
+                      }]}>Pick Month 1</Text>
                       <View
                         style={{
                           borderWidth: 1,
                           borderColor: "white",
                           borderRadius: 30,
                           marginTop: 10,
+                          marginBottom: 30,
+                          backgroundColor: "white",
+                          elevation: 3,
                         }}
+                        
                       >
-                      <Picker
-                        style={{ width: "100%" }}
-                        mode="dropdown"
-                        placeholder="Forecast Project Name"
-                        onValueChange={(itemValue) => setMonth(itemValue)}
-                        selectedValue={projectname ? projectname : null}
-                      >
-                        <Picker.Item label="Select month 1" value="" />
-                        {monthData.map((it, index) => (
-                          <Picker.Item label={it.month} value={it.value} />
-                        ))}
-                      </Picker></View>
+                        <Picker
+                          style={styles.picker}
+                          mode="dropdown"
+                          placeholder="Forecast Project Name"
+                          onValueChange={(itemValue) => setMonth(itemValue)}
+                          selectedValue={projectname ? projectname : null}
+                        >
+                          <Picker.Item label="Select month 1" value="" />
+                          {monthData.map((it, index) => (
+                            <Picker.Item label={it.month} value={it.value} />
+                          ))}
+                        </Picker>
+                      </View>
                     </View>
-                    {month != null && noOfMonths.map((months, index) => {
+                    <View style={{
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "white",
+                      borderTopLeftRadius: 30,
+                      borderTopRightRadius: 30,
+                    }}>{month != null &&
+                      noOfMonths.map((months, index) => {
+                        console.log(months, "months");
+                        // console.log(monthData[month + index - 1].month,'ss');
                         return (
-                          <View style={styles.sub_container}>
+                          <View style={[styles.sub_container,{
+                          
+                          }]}>
                             <Text style={styles.text}>
-                              Month {monthData[month + index - 1].month}
+                              {monthData[month + index - 1].month}
+                             
                             </Text>
                             <TextInput
                               style={styles.text_input}
@@ -383,7 +462,7 @@ const Forecast = ({ route, forecastid }) => {
                               )}
                               onBlur={handleBlur(`forecast_month${index}`)}
                               value={values[`forecast_month${index}`]}
-                              placeholder={`Forecast Month${index}`}
+                              // placeholder={`Forecast Month${index}`}
                             />
                           </View>
                         );
@@ -406,16 +485,16 @@ const Forecast = ({ route, forecastid }) => {
                           console.log(values);
                         }}
                       >
-                        <Text style={{ color: "white" }}>Submit</Text>
+                        <Text style={{ color: "#FF8489" }}>Submit</Text>
                       </TouchableOpacity>
-                    </View>
+                    </View></View>
                   </View>
-                </View>
+                </LinearGradient>
               </>
             </ScrollView>
           )}
         </Formik>
-      </ImageBackground>
+      </View>
     </>
   );
 };
@@ -432,6 +511,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor: "white",
   },
   container: {
     // justifyContent: "center",
@@ -439,7 +519,7 @@ const styles = StyleSheet.create({
     // width: "100%",
     flex: 1,
     // left: 0,
-    marginTop: 50,
+    // marginTop: 50,
     marginBottom: 50,
   },
   next_container: {
@@ -454,23 +534,27 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   text: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "white",
+    fontSize: 15,
+    // fontWeight: "bold",
+    textAlign: "left",
+    color: "black",
+    marginBottom: 10,
+    marginLeft: 10,
   },
   text_input: {
     width: "100%",
     height: 60,
-    borderColor: "white",
+    borderColor: "#FF8489",
+    // elevation: 1,
     borderWidth: 1,
     marginTop: 10,
     padding: 15,
     borderRadius: 30,
   },
   picker: {
-    width: "100%",
-    height: 40,
+    width: "90%",
+    height: 50,
+    marginHorizontal: 20,
     // marginTop: 10,
   },
   picker_item: {
@@ -481,13 +565,14 @@ const styles = StyleSheet.create({
     width: "50%",
     height: 50,
     color: "black",
-    borderColor: "white",
+    borderColor: "#FF8489",
     borderWidth: 3,
     justifyContent: "center",
     marginLeft: "auto",
     marginRight: "auto",
     alignItems: "center",
     marginTop: 10,
+    marginBottom: 10,
     borderRadius: 30,
   },
   box: {
@@ -508,7 +593,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderWidth: 1,
-    borderColor: "white",
+    borderColor: "#EEEEEE",
     borderRadius: 5,
     fontSize: 13,
     textAlignVertical: "top",

@@ -70,10 +70,15 @@ const NavigationSignUp = () => {
       <>
           
               <Tab.Navigator
-                  style={ { height: 55, borderTopWidth: 0, elevation: 0 }}
+                  style={ { height: 90, borderTopWidth: 0, elevation: 0,
+                 }}
                   screenOptions={({ route }) => ({
                       tabBarStyle:{
-                          backgroundColor:'#ffaa00'
+                          backgroundColor:'white',
+                            borderTopWidth: 0,
+                            elevation: 0,
+                            height: 55,
+                            paddingBottom: 10,
                       },
                       tabBarIcon: ({ focused, color, size }) => {
                         let iconName;

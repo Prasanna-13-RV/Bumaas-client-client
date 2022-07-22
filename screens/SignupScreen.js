@@ -30,7 +30,7 @@ const LoginScreen = ({ setForecastid }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
-    const customerRef = db.collection("custmast").where("Email", "==", email || email.capitalize());
+    const customerRef = db.collection("custmast").where("Email", "==", email.trim());
     const customerMail = await customerRef.get();
     if (customerMail.empty) {
 		console.log(customerMail.docs[0].data());
@@ -39,7 +39,7 @@ const LoginScreen = ({ setForecastid }) => {
     }
     const customer = customerMail.docs[0].data();
     auth
-      .createUserWithEmailAndPassword(email.trim(), password)
+      .createUserWithEmailAndPassword(email.trim(), password.trim())
       .then((userCredential) => {
         
         const user = userCredential.user;

@@ -6,132 +6,178 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  ImageBackground
+  Button,
+  ImageBackground,
 } from "react-native";
+import { showMessage, hideMessage } from "react-native-flash-message";
+import FlashMessage from "react-native-flash-message";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
 import { db } from "../../firebase/firebase";
 const Actual_Forecast_Stock = () => {
-	const [singleforecast, setSingleForecast] = useState('');
+  const [singleforecast, setSingleForecast] = useState("");
   const [forecasts, setForecasts] = useState([]);
   const [forecastid, setForecastid] = useState("");
   const forecastRef = db.collection("Forecast");
   useEffect(async () => {
+    showMessage({
+      message: "Invalid data.",
+      type: "info",
+    });
     const forecast = await forecastRef.get();
-	console.log(forecast.docs[0].data());
+    console.log(forecast.docs[0].data());
     setForecasts(forecast.docs.map((doc) => doc.data()));
   }, []);
   const navigation = useNavigation();
 
   const actual_stock_schema = Yup.object().shape({
-   
     actual_stock_quantity: Yup.number().required(),
-   
   });
-
 
   const image = { uri: "https://wallpaperaccess.com/full/3966936.jpg" };
   const [description, setDescription] = useState("");
   const [actualstockquantity, setActualstockquantity] = useState("");
   const [weeklyconsumption, setWeeklyconsumption] = useState("");
   const handleForecastCahnge = async (itemValue) => {
-	  console.log(itemValue);
-	const forecastSingleRef = await db.collection("Forecast").where("Forecastid", "==", itemValue);
-	const forecast = await forecastSingleRef.get();
-	console.log(forecast);
-	setSingleForecast(forecast.docs[0].data());
-
-  }
+    console.log(itemValue);
+    const forecastSingleRef = await db
+      .collection("Forecast")
+      .where("Forecastid", "==", itemValue);
+    const forecast = await forecastSingleRef.get();
+    console.log(forecast);
+    setSingleForecast(forecast.docs[0].data());
+  };
   return (
-    <><ImageBackground source={image} resizeMode="cover" style={styles.image}>
+    <>
+     
+     <LinearGradient
+              style={styles.image}
+              start={[0, 1]}
+              end={[1, 0]}
+              colors={["#FF8489", "#D5ADC8"]}
+            >
       <Formik
         initialValues={{
-         
           actual_stock_quantity: "",
-          
         }}
         // validationSchema={}
-        onSubmit={async (values) => {
-			console.log('dd00',values)
-			await db.collection("Forecast").doc(forecastid).update({
-				actual_production: values.actual_stock_quantity,
-			});
-
+        onSubmit={ (values) => {
+          showMessage({
+            message: "Hello World",
+            description: "This is our second message",
+            type: "success",
+          });
+          console.log(values);
+          try {
+            console.log("dd00", values);
+            await db.collection("Forecast").doc(forecastid).update({
+              actual_production: values.actual_stock_quantity,
+            });
+            console.log(orderno, "no");
+            const orderno = forecastid.split("_")[0];
+            await db.collection("orders").doc(`Order_${orderno}`).update({
+              actual_production: values.actual_stock_quantity,
+            });
+            showMessage({
+              message: "Successfully Added",
+              type: "success",
+            });
+          } catch (error) {
+            console.log(error,'err');
+            showMessage({
+              message: "Invalid data. Please try again",
+              type: "danger",
+            });
+          }
         }}
       >
         {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
           <ScrollView>
-            <View style={styles.container}>
-              <View style={styles.sub_container}>
-                <Text style={styles.text}>Forecast ID</Text>
-                <View style={{
-                   borderWidth: 1,
-                   borderColor: "#ddd",
-                   borderRadius: 5,
-                   width: '100%',
-                   marginTop:10
-                }}>
-                <Picker
-                  selectedValue={forecastid}
-                  style={styles.picker}
-                  onValueChange={(itemValue, itemIndex) => {
-                    setForecastid(itemValue);
-					handleForecastCahnge(itemValue);
-                  }}
-                >	
-                  {forecasts.map((forecast) => (
-                    <Picker.Item
+            
+              <View style={styles.container}>
+                <View style={styles.sub_container}>
+                  <View style={styles.elevator}>
+                    <Text style={styles.text}>Forecast ID</Text>
+                  </View>
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderColor: "white",
+                      // backgroundColor: "#ffffff8d",
+                      borderBottomLeftRadius: 5,
+                      borderBottomRightRadius: 5,
+                      width: "100%",
+                      // marginTop: 10,
+                    }}
+                  >
+                    <Picker
+                      selectedValue={forecastid}
                       style={styles.picker}
-                      label={forecast.Forecastid}
-                      value={forecast.Forecastid}
-                    />
-                  ))}
-                </Picker>
+                      onValueChange={(itemValue, itemIndex) => {
+                        setForecastid(itemValue);
+                        handleForecastCahnge(itemValue);
+                      }}
+                    >
+                      {forecasts.map((forecast) => (
+                        <Picker.Item
+                          style={styles.picker}
+                          label={forecast.Forecastid}
+                          value={forecast.Forecastid}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
+                </View>
+                <View style={styles.sub_container}>
+                  <View style={styles.elevator}>
+                    <Text style={styles.text}>Project Name</Text>
+                  </View>
+
+                  <TextInput
+                    style={styles.input}
+                    placeholder=""
+                    value={singleforecast ? singleforecast.Projectname : ""}
+                  />
+                </View>
+
+                <View style={styles.sub_container}>
+                  <View style={styles.elevator}>
+                    <Text style={styles.text}>Actual Production</Text>
+                  </View>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Actual Stock Number"
+                    onChangeText={handleChange("actual_stock_quantity")}
+                    onBlur={handleBlur("actual_stock_quantity")}
+                  />
+                </View>
+                <View style={styles.sub_container}>
+                  <View style={styles.elevator}>
+                    <Text style={styles.text}>remarks</Text>
+                  </View>
+                  <TextInput
+                    style={styles.input}
+                    value={singleforecast ? singleforecast.Remarks : ""}
+                  />
+                </View>
+                <View>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      handleSubmit();
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>Submit</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-              <View style={styles.sub_container}>
-                <Text style={styles.text}>Project Name</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder=""
-                  value={singleforecast ? singleforecast.Projectname : ""}
-                  
-                />
-              </View>
-              
-              <View style={styles.sub_container}>
-                <Text style={styles.text}>Actual Production</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Actual Stock Number"
-                  onChangeText={handleChange("actual_stock_quantity")}
-                  onBlur={handleBlur("actual_stock_quantity")}
-                />
-              </View>
-              <View style={styles.sub_container}>
-                <Text style={styles.text}>remarks</Text>
-                <TextInput
-                  style={styles.input}
-                  value={singleforecast ? singleforecast.Remarks : ""}
-                />
-              </View>
-              <View>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    handleSubmit();
-                    
-                  }}
-                >
-                  <Text style={{ color: "white" }}>Submit</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
           </ScrollView>
         )}
-      </Formik></ImageBackground>
+      </Formik>
+        </LinearGradient>
     </>
   );
 };
@@ -140,9 +186,9 @@ export default Actual_Forecast_Stock;
 
 const styles = StyleSheet.create({
   image: {
-		flex: 1,
-		justifyContent: "center",
-	  },
+    flex: 1,
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
     // backgroundColor: "#fff",
@@ -154,22 +200,32 @@ const styles = StyleSheet.create({
     // flex: 1,
     width: "90%",
     // backgroundColor: "#fff",
+    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
   },
+  elevator: {
+    elevation: 3,
+    backgroundColor: "white",
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    width: "100%",
+  },
   text: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 10,
-    color: 'white'
+    fontSize: 15,
+    elevation: 10,
+    padding: 15,
+    // fontWeight: "bold",
+    // marginTop: 10,
+    color: "black",
   },
   picker: {
     width: "100%",
-    height: 40,
-    color: 'white',
-    marginTop: 10,
-    marginBottom: 10,
-   
+    height: 50,
+    color: "black",
+    fontSize: 15,
+    backgroundColor: "white",
+    // marginBottom: 10,
   },
   textarea: {
     width: "100%",
@@ -185,11 +241,12 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     height: 50,
-    margin: 10,
+    // margin: 10,
     padding: 10,
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 5,
+    borderColor: "white",
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
     fontSize: 13,
   },
   button: {
@@ -197,7 +254,7 @@ const styles = StyleSheet.create({
     // height: 50,
     margin: 10,
     paddingHorizontal: 20,
-    paddingVertical:10,
+    paddingVertical: 10,
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 5,

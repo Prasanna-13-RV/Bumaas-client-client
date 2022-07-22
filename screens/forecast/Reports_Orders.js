@@ -8,7 +8,7 @@ import {
 	ImageBackground
 } from 'react-native';
 const image = { uri: "https://wallpaperaccess.com/full/3966936.jpg" };
-
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState, useEffect } from 'react';
 import ReportsOrder from '../../components/forecast/ReportsOrders.component';
 import { projectGetSingle } from '../../axios/axios';
@@ -32,7 +32,12 @@ const Reports_Orders = ({ route }) => {
 	return (
 		<>
 			
-			<ImageBackground source={image} resizeMode="cover" style={styles.image}>
+			<LinearGradient
+        style={styles.image}
+        start={[0, 1]}
+        end={[1, 0]}
+        colors={["#FF8489", "#D5ADC8"]}
+      >
 			<View style={styles.container}>
 				<Text style={styles.text}>PROJECT VISE ORDERS 
 </Text>
@@ -40,7 +45,7 @@ const Reports_Orders = ({ route }) => {
 			<ScrollView>
 				{project && console.log(project)}
 				{project && <ReportsOrder forecast={project} />}
-			</ScrollView></ImageBackground>
+			</ScrollView></LinearGradient>
 		</>
 	);
 };
@@ -59,6 +64,7 @@ const styles = StyleSheet.create({
 		alignContent: 'center',
 		justifyContent: 'center',
 		width: '100%',
+		color: 'white',
 		// marginLeft: '25%'
 		textAlign: 'center'
 	}

@@ -8,7 +8,8 @@ import {
 	TouchableOpacity,
 	ImageBackground
 } from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { LinearGradient } from "expo-linear-gradient";
+import SearchBar from "react-native-dynamic-search-bar";
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { forecastGet } from '../../axios/axios';
@@ -31,57 +32,68 @@ const OrderList = ({ route }) => {
 	}, []);
 	const handleSearch = (text) => {
 		setSearch(text);
+		console.log(projects.filter((project) => project.Projectname.includes(text)),'found');
 		projects &&
-			setSearchProject(
-				projects.filter((project) => project.Projectname.includes(text))
-			);
-	};
+		  setSearchProject(
+			projects.filter((project) => project.Projectname.includes(text))
+		  );
+	  };
 	return (
-		<ImageBackground source={image} resizeMode='cover' style={styles.image}>
+		<LinearGradient
+        style={styles.image}
+        start={[0, 1]}
+        end={[1, 0]}
+        colors={["#FF8489", "#D5ADC8"]}
+      >
 			<View style={styles.search}>
-				<SearchBar
-					placeholder='Type Here...'
-					lightTheme
-					// round
-					onChangeText={(text) => handleSearch(text)}
-					value={search}
-				/>
+			<SearchBar
+            placeholder="Search here"
+            onClearPress={() => setSearch("")}
+            onChangeText={(text) => handleSearch(text)}
+          />
 			</View>
 			<ScrollView style={styles.container}>
-				{search.length > 0 &&
-					searchProject.map((project) => {
-						
-						
-						<TouchableOpacity
-						style={styles.maincard}
-							onPress={() =>
-								navigation.push('Reports_Orders', {
-									forecastid:project.orderid
-								})
-							}
-						>
-							<Text style={[styles.textquestion,{color:'#1b5cb7'}]}>Project name:</Text>
-						<Text style={styles.textquestion}>{project.Projectname}</Text>
-						</TouchableOpacity>
-					})}
-				{search.length == 0 &&
-					projects.map((project) => (
-						<>
-							<TouchableOpacity
-							style={styles.maincard}
-								onPress={() =>
-									navigation.push('Reports_Orders', {
-										forecastid:project.orderid
-									})
-								}
-							>
-								<Text style={[styles.textquestion,{color:'#1b5cb7'}]}>Project name:</Text>
-						<Text style={styles.textquestion}>{project.Projectname}</Text>
-							</TouchableOpacity>
-						</>
-					))}
+				{search.length > 0 ?
+            searchProject.map((project) =>
+				(
+              <TouchableOpacity
+                style={styles.maincard}
+                onPress={() =>
+                  navigation.push("Reports_Forecast", {
+                    forecastid: project.Forecastid,
+                    type: route.params.type,
+                  })
+                }
+              >
+                <Text style={[styles.textquestion, { color: "#1b5cb7" }]}>
+                  Project name:
+                </Text>
+                <Text style={styles.textquestion}>{project.Projectname}</Text>
+              </TouchableOpacity>
+            )):null}
+			{
+				search.length === 0 ? 
+					(projects.map((project) => 
+				(
+				
+				  <TouchableOpacity
+					style={styles.maincard}
+					onPress={() =>
+					  navigation.push("Reports_Orders", {
+						forecastid: project.Forecastid,
+						type: route.params.type,
+					  })
+					}
+				  >
+					
+					<Text style={styles.textquestion}>{project.Projectname}</Text>
+				  </TouchableOpacity>
+				
+			  ))
+				)
+			:null}
 			</ScrollView>
-		</ImageBackground>
+		</LinearGradient>
 	);
 };
 const styles = StyleSheet.create({
@@ -91,10 +103,10 @@ const styles = StyleSheet.create({
 	  },
 	textquestion: {
 		// color: "#fff",
-		fontSize: 15,
+		fontSize: 14,
 		marginLeft: 10,
 		marginVertical: 5,
-		fontWeight: "bold",
+		// fontWeight: "bold",
 	  },
 	  maincard: {
 		width: "90%",
@@ -110,7 +122,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		// backgroundColor: '#fff',
-		marginTop: StatusBar.currentHeight + 50,
+		marginTop: StatusBar.currentHeight ,
 		zIndex: 1,
 		paddingTop:50
 		// paddingVertical: 20,
@@ -131,13 +143,13 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold'
 	},
 	search: {
-		width: '95%',
+		width: '100%',
 
 		alignSelf: 'center',
 		borderRadius: 50,
 		position: 'absolute',
-		top: StatusBar.currentHeight + 10,
-		backgroundColor: 'black',
+		top:  10,
+		
 		zIndex: 5
 	}
 });

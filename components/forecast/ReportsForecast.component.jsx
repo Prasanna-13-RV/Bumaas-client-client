@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../../firebase/firebase";
 
 
-const ReportsForecast = ({ forecast, type }) => {
+const ReportsForecast = ({ forecast,order, type }) => {
   const monthData = [
     {
       month: "January",
@@ -78,7 +78,7 @@ const ReportsForecast = ({ forecast, type }) => {
       if (forecast && forecast[0]) {
         const time = forecast[0].TimeStamp.slice(0, 11);
         console.log('====================================');
-        console.log(time,'TIME');
+        console.log(order,'TIMEs');
         console.log('====================================');
         const projectRef = db
           .collection("projects")
@@ -104,7 +104,7 @@ const ReportsForecast = ({ forecast, type }) => {
     // <TouchableOpacity>
     <>
       
-        {forecast && forecast[0] && projects && json && (
+        {forecast && forecast[0] && projects && json && order && (
           <><View style={styles.maincard}> 
             <View style={styles.miniCard}>
               <Text style={[styles.miniCardText, styles.textquestion]}>
@@ -299,7 +299,7 @@ const ReportsForecast = ({ forecast, type }) => {
                   service level accepted days
                 </Text>
                 <Text style={styles.miniCardText}>
-                  {/* {forecast[0].actual_production} */}-
+                  {order[0].AcceptedDays}
                 </Text>
               </View>
             ) : null}</View>
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     width: "94%",
     // justifyContent: "center",
     // alignItems: "center",
-    backgroundColor: "#ffffff93",
+    // backgroundColor: "#ffffff93",
     padding: 10,
     borderRadius: 10,
     // borderColor: "black",
