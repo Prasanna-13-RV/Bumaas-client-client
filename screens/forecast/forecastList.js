@@ -58,17 +58,7 @@ const forecastList = ({ route }) => {
         colors={["#FF8489", "#D5ADC8"]}
       >
         <View style={styles.search}>
-        <Button
-        onPress={() => {
-          /* HERE WE GONE SHOW OUR FIRST MESSAGE */
-          showMessage({
-            message: "Simple message",
-            type: "info",
-          });
-        }}
-        title="Request Details"
-        color="#841584"
-      />
+        
           <SearchBar
             placeholder="Search here"
             onClearPress={() => setSearch("")}

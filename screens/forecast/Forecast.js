@@ -3,6 +3,7 @@ import {
   Text,
   View,
   ScrollView,
+  ToastAndroid,
   TextInput,
   Picker,
   TouchableOpacity,
@@ -46,7 +47,7 @@ const Forecast = ({ route, forecastid }) => {
   const [noOfMonths, setNoOfMonths] = useState([1, 2, 3]);
   const [dropdownMonths, setDropdownMonths] = useState(1);
   const [initialFormValues, setInitialFormValues] = useState({
-    forecast_name: "",
+    
   });
   const [forecast, setForecast] = useState("");
   const [type, setType] = useState("");
@@ -73,7 +74,7 @@ const Forecast = ({ route, forecastid }) => {
 
   class InitialFormValuesClass {
     constructor(months = 1) {
-      this.forecast_name = "";
+      
 
       this.remarks = "";
       for (let i = 0; i < months; i++) {
@@ -138,7 +139,9 @@ const Forecast = ({ route, forecastid }) => {
       value: 12,
     },
   ];
-
+const errfunc = () => {
+  return ToastAndroid.show("Invalid data. Please try again", ToastAndroid.SHORT)
+}
   return (
     <>
       <View style={styles.image}>
@@ -155,7 +158,16 @@ const Forecast = ({ route, forecastid }) => {
             // await projectCreate(values,route.params.customer_id).then((res) => {
             //   console.log(res.data);
             // });
+
             try{
+              for (const key in values) {
+                console.log(values);
+                if (values[key] === "") {
+            
+                  return errfunc()
+                }
+            }
+              
               console.log(values);
             const random = Math.random(10)
               .toString()
@@ -187,17 +199,13 @@ const Forecast = ({ route, forecastid }) => {
               AcceptedDays: "-",
               Status: "Pending",
             });
-            showMessage({
-              message: "Successfully Added",
-              type: "success",
-            });
+            ToastAndroid.show("Successfully Added", ToastAndroid.SHORT)
+            
             }
             catch(err){
               console.log(err,'err');
-              showMessage({
-                message: "Invalid data. Please try again",
-                type: "danger",
-              });
+              ToastAndroid.show("Invalid data. Please try again", ToastAndroid.SHORT)
+              
             }
             
            
@@ -209,7 +217,7 @@ const Forecast = ({ route, forecastid }) => {
             <ScrollView>
 
               <>
-              <FlashMessage position="bottom" />
+              
               <LinearGradient
         style={styles.image}
         start={[0, 1]}

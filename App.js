@@ -7,6 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator  } from "@react-navigation/native-stack";
 import Login from './screens/Login';
 import SignupScreen from "./screens/SignupScreen";
+import FlashMessage from "react-native-flash-message";
 export default function App() {
   const store = configureStore()
   const Stack = createNativeStackNavigator();
@@ -15,6 +16,7 @@ export default function App() {
   };
   return (
     <Provider store={store}>
+      <FlashMessage position="bottom" />
       <NavigationContainer
               
              

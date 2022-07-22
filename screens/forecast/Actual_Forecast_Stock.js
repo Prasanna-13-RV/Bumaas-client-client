@@ -1,6 +1,7 @@
 import {
   StyleSheet,
   Text,
+  ToastAndroid,
   View,
   Picker,
   ScrollView,
@@ -23,10 +24,7 @@ const Actual_Forecast_Stock = () => {
   const [forecastid, setForecastid] = useState("");
   const forecastRef = db.collection("Forecast");
   useEffect(async () => {
-    showMessage({
-      message: "Invalid data.",
-      type: "info",
-    });
+    
     const forecast = await forecastRef.get();
     console.log(forecast.docs[0].data());
     setForecasts(forecast.docs.map((doc) => doc.data()));
@@ -64,33 +62,32 @@ const Actual_Forecast_Stock = () => {
           actual_stock_quantity: "",
         }}
         // validationSchema={}
-        onSubmit={ (values) => {
-          showMessage({
-            message: "Hello World",
-            description: "This is our second message",
-            type: "success",
-          });
+        onSubmit={ async (values) => {
+          
           console.log(values);
           try {
+            if(values.actual_stock_quantity !== "") {
+             
+
+            
             console.log("dd00", values);
             await db.collection("Forecast").doc(forecastid).update({
               actual_production: values.actual_stock_quantity,
             });
             console.log(orderno, "no");
-            const orderno = forecastid.split("_")[0];
+            const orderno = forecastid.split("_")[1];
+            console.log(orderno);
             await db.collection("orders").doc(`Order_${orderno}`).update({
               actual_production: values.actual_stock_quantity,
             });
-            showMessage({
-              message: "Successfully Added",
-              type: "success",
-            });
+            ToastAndroid.show("Successfully Added", ToastAndroid.SHORT)
+          }else {
+            ToastAndroid.show("Invalid data. Please try again", ToastAndroid.SHORT)
+          }
           } catch (error) {
             console.log(error,'err');
-            showMessage({
-              message: "Invalid data. Please try again",
-              type: "danger",
-            });
+            ToastAndroid.show("Invalid data. Please try again", ToastAndroid.SHORT)
+            
           }
         }}
       >

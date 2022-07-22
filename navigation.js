@@ -5,6 +5,7 @@ import { createNativeStackNavigator  } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUser,faRectangleList,faWarehouse,faCalculator,faBoxesStacked,faChartColumn} from '@fortawesome/free-solid-svg-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FlashMessage from "react-native-flash-message";
 import SignupScreen from "./screens/SignupScreen";
 import forecastList from "./screens/forecast/forecastList";
 import OrderList from "./screens/forecast/OrderList";
@@ -29,7 +30,6 @@ const foecastStack = () => {
 
           <Stack.Screen   name="Forecastscreen"
                       component={Forecast}>
-
           </Stack.Screen>
           
           
@@ -68,7 +68,7 @@ const reportStack = () => {
 const NavigationSignUp = () => {
   return (
       <>
-          
+<FlashMessage position="bottom" />
               <Tab.Navigator
                   style={ { height: 90, borderTopWidth: 0, elevation: 0,
                  }}
@@ -106,26 +106,7 @@ const NavigationSignUp = () => {
                       tabBarInactiveTintColor: 'gray',
                     })}
               >
-      {/* <Stack.Screen
-          name="ProfileScreen"
-          component={ProfileScreen}
-          options={screenOptions}
-      /> */}
-                  {/* <Stack.Screen
-                      name="LoginScreen"
-                      component={LoginScreen}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="Forgot"
-                      component={Forgot}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="RegisterScreen"
-                      component={RegisterScreen}
-                      options={screenOptions}
-                  /> */}
+      
                   <Tab.Screen
                       name="Forecast"
                       component={foecastStack}
@@ -142,56 +123,8 @@ const NavigationSignUp = () => {
                       component={reportStack}
                       options={screenOptions}
                   />
-                  {/* <Stack.Screen
-                      name="ShowCustomer"
-                      component={ShowCustomer}
-                      options={screenOptions}
-                  /> */}
-                  {/* <Stack.Screen
-                      name="ShowAllCustomer"
-                      component={ShowAllCustomer}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="ShowProject"
-                      component={ShowProject}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="CustomerUpdate"
-                      component={CustomerUpdate}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="ProjectUpdate"
-                      component={ProjectUpdate}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="InventoryUpdate"
-                      component={InventoryUpdate}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="Itemmaster"
-                      component={Itemmaster}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="ItemMasterUpdate"
-                      component={ItemMasterUpdate}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="IndViewItemMaster"
-                      component={IndViewItemMaster}
-                      options={screenOptions}
-                  />
-                  <Stack.Screen
-                      name="ViewItemMaster"
-                      component={ViewItemMaster}
-                      options={screenOptions}
-                  /> */}
+                 
+           
               </Tab.Navigator>
           
       </>
